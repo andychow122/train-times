@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>i like trains</title> <!-- meme -->
+
+	<!-- jquery -->
+	<script src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+	<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+	<div class="jumbotron text-center" id="title">
+		<h1>add a train so you won't forget it</h1>
+	</div>
+	<div class="panel panel-primary">
+		<div class="panel-heading">
+			TRAIN SCHEDULE
+		</div>
+		<div class="panel-body">
+			<table class="table">
+    		<thead>
+    			<tr>
+    				<th>Train Name</th>
+    				<th>Destination</th>
+    				<th>Frequency (min)</th>
+    				<th>Next Arrival</th>
+    				<th>Minutes Away</th>
+    			</tr>
+    		</thead>
+			<tbody id="employee-table">
+
+			</tbody>
+
+ 		</table>
+		</div>
+	</div>
+	<div class="panel panel-primary">
+		<div class="panel-heading">ADD A TRAIN HERE</div>
+			  <div class="panel-body">
+	   		  <label>Train Name</label>
+	    	  <input type="text" class="form-control" id="trainName">
+	 		  </div>
+	 		  <div class="panel-body">
+	  		  <label>Destination</label>
+	  		  <input type="text" class="form-control" id="destination">
+			  </div>
+			  <div class="panel-body">
+	  		  <label>Frequency (min)</label>
+	  		  <input type="text" class="form-control" id="frequency">
+			  </div>
+			  <div class="panel-body">
+	  		  <label>First Train Time</label>
+	  		  <input type="text" class="form-control" id="firstTrain">
+	  		  </div>
+	  		  <div class="panel-body">
+			  <button type="submit" class="btn btn-primary" id="click-button">Submit</button>
+			  </div>
+	</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/4.6.0/firebase.js"></script>
+
+<script type="text/javascript">
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDeJl2SbGUavwfqEi0MpG6LK-Amx2r0bBo",
+    authDomain: "train-times-c5a8a.firebaseapp.com",
+    databaseURL: "https://train-times-c5a8a.firebaseio.com",
+    projectId: "train-times-c5a8a",
+    storageBucket: "train-times-c5a8a.appspot.com",
+    messagingSenderId: "981202149684"
+  };
+  firebase.initializeApp(config);
+
+  var db = firebase.database();
+
+
+
+</script>
+
+</body>
+</html>
