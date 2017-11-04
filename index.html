@@ -3,6 +3,10 @@
 <head>
 	<title>i like trains</title> <!-- meme -->
 
+	<!-- moment -->
+	<script src="https://cdn.jsdelivr.net/momentjs/2.12.0/moment.min.js"></script>
+
+
 	<!-- jquery -->
 	<script src="https://code.jquery.com/jquery-3.2.1.js"
   integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
@@ -26,11 +30,11 @@
     				<th>Train Name</th>
     				<th>Destination</th>
     				<th>Frequency (min)</th>
-    				<th>Next Arrival</th>
+    				<th>Next Arrival (military time)</th>
     				<th>Minutes Away</th>
     			</tr>
     		</thead>
-			<tbody id="employee-table">
+			<tbody id="train-table">
 
 			</tbody>
 
@@ -48,11 +52,11 @@
 	  		  <input type="text" class="form-control" id="destination">
 			  </div>
 			  <div class="panel-body">
-	  		  <label>Frequency (min)</label>
+	  		  <label>Frequency (minutes)</label>
 	  		  <input type="text" class="form-control" id="frequency">
 			  </div>
 			  <div class="panel-body">
-	  		  <label>First Train Time</label>
+	  		  <label>First Train Time (military time)</label>
 	  		  <input type="text" class="form-control" id="firstTrain">
 	  		  </div>
 	  		  <div class="panel-body">
@@ -75,7 +79,87 @@
   };
   firebase.initializeApp(config);
 
+// variables
   var db = firebase.database();
+  var trainRef = db.ref("train");
+  var trainName = "";
+  var destination = "";
+  var frequency = 0;
+  var firstTrain = "";
+
+$("#click-button").on("click", function () {
+	// event.preventDefault();
+
+	trainName = $("#trainName").val();
+	destination = $("#destination").val();
+	frequency = $("#frequency").val();
+	firstTrain = $("#firstTrain").val();
+
+
+	console.log(trainName);
+	console.log(destination);
+	console.log(frequency);
+	console.log(firstTrain);
+
+
+	var firstTrainConverted = moment(firstTrain, "hh:mm").subtract(1,"years");
+	console.log(firstTrainConverted);
+
+	var currentTime = moment();
+	console.log("current time: " + moment(currentTime).format("hh:mm"));
+
+	var diffTime = moment().diff(moment(firstTrainConverted), "minutes");
+	console.log("difference in time: " + diffTime);
+
+	var tRemainder = diffTime % frequency;
+	console.log(tRemainder);
+
+	var minutesAway = frequency - tRemainder;
+	console.log("minutes til train: " + minutesAway);
+
+	var nextTrain = moment().add(minutesAway, "minutes");
+	console.log("arrival time: " + moment(nextTrain).format("hh:mm"));
+	nextArrival = moment(nextTrain).format("HH:mm");
+
+
+	trainRef.push({
+		trainName: trainName,
+		destination: destination,
+		frequency: "every " + frequency + " mins",
+		firstTrain: firstTrain,
+		nextArrival: nextArrival,
+		minutesAway: minutesAway
+	});
+
+
+
+
+})  ;
+
+ trainRef.on("child_added", function(snapshot) {
+
+     // Print the initial data to the console.
+      console.log(snapshot.val());
+
+     // Change the HTML
+      var newRow = $("<tr>");
+
+      newRow.append("<td>" + snapshot.val().trainName + "</td>");
+      newRow.append("<td>" + snapshot.val().destination + "</td>");
+      newRow.append("<td>" + snapshot.val().frequency + "</td>");
+      newRow.append("<td>" + snapshot.val().nextArrival + "</td>");
+      newRow.append("<td>" + snapshot.val().minutesAway + "</td>");
+
+     $("#train-table").append(newRow);
+
+
+
+
+   // Create Error Handling
+}, function(errorObject) {
+    console.log("The read failed: " + errorObject.code);
+});
+
 
 
 
